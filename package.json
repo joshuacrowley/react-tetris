@@ -8,6 +8,8 @@
     "url": "https://github.com/brandly/react-tetris"
   },
   "dependencies": {
+    "ajv": "^6.5.0",
+    "babel-core": "^6.26.3",
     "flux": "^2.0.1",
     "keymaster": "^1.6.2",
     "lodash": "^2.4.1",
@@ -17,11 +19,13 @@
     "build:lib": "rollup --config rollup.lib.js",
     "build:app": "rollup --config rollup.app.js",
     "watch": "npm run build:app -- --watch",
-    "build": "npm run clean && npm run build:lib && npm run build:app && npm run html",
+    "build":
+      "npm run clean && npm run build:lib && npm run build:app && npm run html",
     "html": "cp src/index.html dist/",
     "lint": "eslint src/ app/",
     "clean": "rm -rf dist/*",
-    "test": "npm run lint"
+    "test": "npm run lint",
+    "start": "serve dist && npm run watch"
   },
   "author": "Matthew Brandly",
   "license": "MIT",

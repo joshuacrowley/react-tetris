@@ -1,13 +1,13 @@
-import React from 'react';
+import React from "react";
 /* eslint-disable import/no-extraneous-dependencies */
-import styled from 'styled-components';
-import GamePanel from './GamePanel';
-import TypedShell from './TypedShell';
+import styled from "styled-components";
+import GamePanel from "./GamePanel";
+import TypedShell from "./TypedShell";
 
 const Container = styled.div`
   box-sizing: border-box;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
   font-weight: 300;
   width: 100%;
@@ -54,18 +54,9 @@ const SubTitle = styled.h2`
 
 const App = () => (
   <Container>
-    <LeftHalf>
-      <Heading>
-        <Title>react tetris</Title>
-        <SubTitle>Embed a game of Tetris in your React app</SubTitle>
-        <TypedShell>npm install --save react-tetris</TypedShell>
-      </Heading>
-    </LeftHalf>
-    <RightHalf>
-      <VerticallyCenterChildren>
-        <GamePanel />
-      </VerticallyCenterChildren>
-    </RightHalf>
+    <VerticallyCenterChildren>
+      <GamePanel />
+    </VerticallyCenterChildren>
   </Container>
 );
 

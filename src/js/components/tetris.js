@@ -1,10 +1,11 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 // import PauseMenu from './pause-menu';
-import Gameboard from './gameboard';
-import ScoreStore from '../stores/score-store';
-import HeldPiece from './held-piece';
-import PieceQueue from './piece-queue';
+import Gameboard from "./gameboard";
+import ScoreStore from "../stores/score-store";
+import HeldPiece from "./held-piece";
+import PieceQueue from "./piece-queue";
+import Controls from "./controls";
 
 function getScore() {
   return {
@@ -43,7 +44,8 @@ export default class Tetris extends React.Component {
       Gameboard,
       PieceQueue,
       points,
-      linesCleared
+      linesCleared,
+      Controls
     });
   }
 }

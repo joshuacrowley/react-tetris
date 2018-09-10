@@ -16,7 +16,9 @@ function getScore() {
 
 export default class Tetris extends React.Component {
   static propTypes = {
-    children: PropTypes.func.isRequired
+    children: PropTypes.func.isRequired,
+    gameType: PropTypes.oneOf(["FREEPLAY", "LIMITED", "FROZEN"]).isRequired,
+    turnAmount: PropTypes.number
   };
 
   constructor(props) {
@@ -38,6 +40,7 @@ export default class Tetris extends React.Component {
 
   render() {
     const { points, linesCleared } = this.state;
+    const { gameType, turnAmount } = this.props;
 
     return this.props.children({
       HeldPiece,
@@ -45,7 +48,9 @@ export default class Tetris extends React.Component {
       PieceQueue,
       points,
       linesCleared,
-      Controls
+      Controls,
+      turnAmount,
+      gameType
     });
   }
 }

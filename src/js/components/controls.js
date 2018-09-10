@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import key from "keymaster";
 import AppActions from "../actions/app-actions";
 import GameStore from "../stores/game-store";
@@ -13,11 +14,15 @@ function gameBoard() {
   };
 }
 export default class Controls extends React.Component {
+  static propTypes = {
+    turnLimit: PropTypes.number
+  };
+
   constructor(props) {
     super(props);
 
     this.state = {
-      turns: 3
+      turns: props.turns
     };
   }
 
@@ -51,7 +56,7 @@ export default class Controls extends React.Component {
         <button onClick={() => this.changeDirection("flipClockwise")}>
           Turn left{" "}
         </button>
-        <p>{this.state.turns} rotations left</p>
+        <p>{this.state.turns} rotations completed</p>
       </div>
     );
   }

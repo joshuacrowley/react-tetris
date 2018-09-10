@@ -1,7 +1,17 @@
 import React from "react";
-/* eslint-disable import/no-extraneous-dependencies */
+
+import { storiesOf } from "@storybook/react";
+import { action } from "@storybook/addon-actions";
+import { linkTo } from "@storybook/addon-links";
 import styled from "styled-components";
 import Tetris from "../src/js/components/tetris";
+import "./index.css";
+
+import { Button, Welcome } from "@storybook/react/demo";
+
+storiesOf("Tetris", module)
+  .add("Freeplay", () => <GamePanel gameType="FREEPLAY" />)
+  .add("Limited turns", () => <GamePanel gameType="LIMITED" turnAmount={5} />);
 
 const Container = styled.div`
   margin: 24px auto 0;
@@ -42,17 +52,17 @@ const MiddleColumn = Column.extend`
   width: 200px;
 `;
 
-const GamePanel = () => (
+const GamePanel = turnAmount => (
   <Container>
-    <Tetris gameType="freeplay">
+    <Tetris>
       {({
-        gameType,
         HeldPiece,
         Gameboard,
         PieceQueue,
         points,
         linesCleared,
-        Controls
+        Controls,
+        turnAmount
       }) => (
         <div>
           <Score>
@@ -81,7 +91,7 @@ const GamePanel = () => (
           <RightColumn>
             <PieceQueue />
           </RightColumn>
-          {gameType != "freeplay" && <Controls />}
+          <Controls turns={2} />
         </div>
       )}
     </Tetris>
@@ -106,5 +116,3 @@ const Digits = ({ children, count = 4 }) => {
     .split("")
     .map((digit, index) => <Digit key={index}>{digit}</Digit>);
 };
-
-export default GamePanel;

@@ -17,6 +17,11 @@ export default {
     GAME_RESULT: 'GAME_RESULT'
   },
 
+  playTypes : {
+    FREEPLAY : 'FREEPLAY',
+    LIMITED_TURNS : 'LIMITED_TURNS' 
+  }
+
   events: {
     LINE_CLEARED: 'LINE_CLEARED',
     PLAYER_LOST: 'PLAYER_LOST'

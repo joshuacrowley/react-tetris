@@ -1,7 +1,28 @@
 import React from "react";
-/* eslint-disable import/no-extraneous-dependencies */
+
+import { storiesOf } from "@storybook/react";
+import { action } from "@storybook/addon-actions";
+import { linkTo } from "@storybook/addon-links";
 import styled from "styled-components";
 import Tetris from "../src/js/components/tetris";
+import "./index.css";
+
+import { Button, Welcome } from "@storybook/react/demo";
+
+storiesOf("Tetris", module)
+  .add("Freeplay", () => <GamePanel gameType="FREEPLAY" time={30} />)
+  .add("Limited rotations", () => (
+    <GamePanel gameType="LIMITED_TURNS" turnAmount={5} time={30} />
+  ))
+  .add("No clockwise moves", () => (
+    <GamePanel
+      gameType="LIMITED_TURNS"
+      turnAmount={5}
+      time={30}
+      moveConstraint={["FLIP_CLOCKWISE"]}
+    />
+  ))
+  .add("Freeze mode", () => <GamePanel gameType="FREEZE" time={300} />);
 
 const Container = styled.div`
   margin: 24px auto 0;
@@ -14,15 +35,10 @@ const Score = styled.div`
   font-family: monospace;
   font-size: 18px;
   color: #888;
-`;
-
-const LeftHalf = styled.div`
-  display: inline-block;
-  width: 50%;
-`;
-
-const RightHalf = LeftHalf.extend`
-  text-align: right;
+  justify-content: space-between;
+  display: flex;
+  flex-direction: row;
+  align-content: space-between;
 `;
 
 const Column = styled.div`
@@ -42,36 +58,51 @@ const MiddleColumn = Column.extend`
   width: 200px;
 `;
 
-const GamePanel = () => (
+const GamePanel = props => (
   <Container>
-    <Tetris gameType="freeplay">
+    <Tetris
+      turnAmount={props.turnAmount}
+      gameType={props.gameType}
+      time={props.time}
+      moveConstraint={props.moveConstraint}
+    >
       {({
-        gameType,
         HeldPiece,
         Gameboard,
         PieceQueue,
         points,
         linesCleared,
-        Controls
+        Controls,
+        turns,
+        time,
+        moveConstraint,
+        TurnStack
       }) => (
         <div>
           <Score>
-            <LeftHalf>
+            <div>
               <p>
                 points<br />
                 <Digits>{points}</Digits>
               </p>
-            </LeftHalf>
-            <RightHalf>
+            </div>
+            <div>
+              <p>
+                time<br />
+                <Digits>{time / 1000}</Digits>
+              </p>
+            </div>
+            <div>
               <p>
                 lines<br />
                 <Digits>{linesCleared}</Digits>
               </p>
-            </RightHalf>
+            </div>
           </Score>
 
           <LeftColumn>
             <HeldPiece />
+            {props.gameType === "FREEZE" && <TurnStack />}
           </LeftColumn>
 
           <MiddleColumn>
@@ -81,7 +112,7 @@ const GamePanel = () => (
           <RightColumn>
             <PieceQueue />
           </RightColumn>
-          {gameType != "freeplay" && <Controls />}
+          <Controls turns={turns} moveConstraint={moveConstraint} />
         </div>
       )}
     </Tetris>
@@ -106,5 +137,3 @@ const Digits = ({ children, count = 4 }) => {
     .split("")
     .map((digit, index) => <Digit key={index}>{digit}</Digit>);
 };
-
-export default GamePanel;

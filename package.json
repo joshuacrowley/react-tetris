@@ -19,13 +19,14 @@
     "build:lib": "rollup --config rollup.lib.js",
     "build:app": "rollup --config rollup.app.js",
     "watch": "npm run build:app -- --watch",
-    "build":
-      "npm run clean && npm run build:lib && npm run build:app && npm run html",
+    "build": "npm run clean && npm run build:lib && npm run build:app && npm run html",
     "html": "cp src/index.html dist/",
     "lint": "eslint src/ app/",
     "clean": "rm -rf dist/*",
     "test": "npm run lint",
-    "start": "serve dist && npm run watch"
+    "start": "serve dist && npm run watch",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
   },
   "author": "Matthew Brandly",
   "license": "MIT",
@@ -52,7 +53,12 @@
     "rollup-plugin-node-globals": "1.1.0",
     "rollup-plugin-node-resolve": "3.0.0",
     "styled-components": "2.2.2",
-    "uglify-js": "3.1.5"
+    "uglify-js": "3.1.5",
+    "@storybook/react": "^3.4.7",
+    "@storybook/addon-actions": "^3.4.7",
+    "@storybook/addon-links": "^3.4.7",
+    "@storybook/addons": "^3.4.7",
+    "babel-runtime": "^6.26.0"
   },
   "peerDependencies": {
     "react": "* || ^16.0.0",

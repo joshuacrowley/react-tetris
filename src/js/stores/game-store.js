@@ -1,15 +1,16 @@
-import _ from 'lodash';
-import AppDispatcher from '../dispatchers/app-dispatcher';
-import AppConstants from '../constants/app-constants';
-import EventEmitter from '../modules/event-emitter';
-import BoardStore from './board-store';
-import PieceStore from './piece-store';
-import pieceSetter from '../modules/piece-setter';
+import _ from "lodash";
+import AppDispatcher from "../dispatchers/app-dispatcher";
+import AppConstants from "../constants/app-constants";
+import EventEmitter from "../modules/event-emitter";
+import BoardStore from "./board-store";
+import PieceStore from "./piece-store";
+import pieceSetter from "../modules/piece-setter";
 
 const { states, actions } = AppConstants;
 
 let _currentState = null;
 let _interval = null;
+let _gameType = null;
 
 const GameStore = _.extend(
   {
@@ -22,7 +23,7 @@ const GameStore = _.extend(
       setter(
         pieceData.piece.blocks[pieceData.rotation],
         pieceData.previewPosition,
-        'piece-preview'
+        "piece-preview"
       );
 
       // set the actual piece
@@ -36,6 +37,14 @@ const GameStore = _.extend(
 
     getCurrentState() {
       return _currentState;
+    },
+
+    getCurrentGameType() {
+      return _gameType;
+    },
+
+    setGameType(gameType) {
+      _gameType = gameType;
     },
 
     start() {

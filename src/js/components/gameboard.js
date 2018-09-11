@@ -1,9 +1,9 @@
-import React from 'react';
-import key from 'keymaster';
-import AppActions from '../actions/app-actions';
-import GameStore from '../stores/game-store';
-import AppConstants from '../constants/app-constants';
-import DetectShift from '../modules/detect-shift';
+import React from "react";
+import key from "keymaster";
+import AppActions from "../actions/app-actions";
+import GameStore from "../stores/game-store";
+import AppConstants from "../constants/app-constants";
+import DetectShift from "../modules/detect-shift";
 
 const { states } = AppConstants;
 
@@ -14,15 +14,15 @@ function gameBoard() {
 }
 
 function bindKeyboardEvents() {
-  key('down', AppActions.moveDown);
-  key('left', AppActions.moveLeft);
-  key('right', AppActions.moveRight);
-  key('space', AppActions.hardDrop);
-  key('z', AppActions.flipCounterclockwise);
-  key('x', AppActions.flipClockwise);
-  key('up', AppActions.flipClockwise);
+  key("down", AppActions.moveDown);
+  key("left", AppActions.moveLeft);
+  key("right", AppActions.moveRight);
+  key("space", AppActions.hardDrop);
+  key("z", AppActions.flipCounterclockwise);
+  key("x", AppActions.flipClockwise);
+  key("up", AppActions.flipClockwise);
 
-  key('p', () => {
+  key("p", () => {
     if (GameStore.getCurrentState() === states.PLAYING) {
       AppActions.pause();
     } else {
@@ -30,7 +30,7 @@ function bindKeyboardEvents() {
     }
   });
 
-  key('c', AppActions.hold);
+  key("c", AppActions.hold);
   DetectShift.bind(AppActions.hold);
 }
 
@@ -43,7 +43,9 @@ export default class Gameboard extends React.Component {
   componentWillMount() {
     GameStore.addChangeListener(this._onChange);
     bindKeyboardEvents();
-    GameStore.start();
+    if (GameStore.getCurrentGameType() !== "FREEZE") {
+      GameStore.start();
+    }
   }
 
   _onChange = () => {
@@ -53,7 +55,7 @@ export default class Gameboard extends React.Component {
   render() {
     const rows = this.state.gameBoard.map((row, i) => {
       const blocksInRow = row.map((block, j) => {
-        const classString = `game-block ${  block || 'block-empty'}`;
+        const classString = `game-block ${block || "block-empty"}`;
         return <td key={j} className={classString} />;
       });
 

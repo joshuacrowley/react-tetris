@@ -1,9 +1,11 @@
-import _ from 'lodash';
-import AppDispatcher from '../dispatchers/app-dispatcher';
-import AppConstants from '../constants/app-constants';
-import BoardStore from './board-store';
-import EventEmitter from '../modules/event-emitter';
-import PieceQueue from '../modules/piece-queue';
+import _ from "lodash";
+import AppDispatcher from "../dispatchers/app-dispatcher";
+import AppConstants from "../constants/app-constants";
+import BoardStore from "./board-store";
+import ScoreStore from "./score-store";
+import GameStore from "./game-store";
+import EventEmitter from "../modules/event-emitter";
+import PieceQueue from "../modules/piece-queue";
 
 const { events, actions } = AppConstants;
 
@@ -54,21 +56,34 @@ function _hardDrop() {
 }
 
 function _flipClockwise() {
-  const newRotation = (_rotation + 1) % _piece.blocks.length;
-  if (BoardStore.isEmptyPosition(_piece, newRotation, _position)) {
-    _rotation = newRotation;
-    return true;
+  let turns = ScoreStore.getTurns();
+  console.log(GameStore.getCurrentGameType());
+  if (GameStore.getCurrentGameType() === "LIMITED_TURNS" && turns === 0) {
+    console.log("Yayay");
+  } else {
+    const newRotation = (_rotation + 1) % _piece.blocks.length;
+    if (BoardStore.isEmptyPosition(_piece, newRotation, _position)) {
+      _rotation = newRotation;
+      ScoreStore.removeTurn();
+      return true;
+    }
   }
   return false;
 }
 
 function _flipCounterclockwise() {
-  let newRotation = _rotation - 1;
-  if (newRotation < 0) newRotation += _piece.blocks.length;
+  let turns = ScoreStore.getTurns();
+  if (GameStore.getCurrentGameType() === "LIMITED_TURNS" && turns === 0) {
+    return false;
+  } else {
+    let newRotation = _rotation - 1;
+    if (newRotation < 0) newRotation += _piece.blocks.length;
 
-  if (BoardStore.isEmptyPosition(_piece, newRotation, _position)) {
-    _rotation = newRotation;
-    return true;
+    if (BoardStore.isEmptyPosition(_piece, newRotation, _position)) {
+      _rotation = newRotation;
+      ScoreStore.removeTurn();
+      return true;
+    }
   }
   return false;
 }
@@ -76,6 +91,7 @@ function _flipCounterclockwise() {
 function _lockInPiece() {
   BoardStore.setPiece(_piece, _rotation, _position);
   setUpNewPiece();
+  ScoreStore.resetTurns();
 }
 
 function _holdPiece() {

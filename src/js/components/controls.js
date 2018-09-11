@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import key from "keymaster";
 import AppActions from "../actions/app-actions";
 import GameStore from "../stores/game-store";
+import ScoreStore from "../stores/score-store";
 import AppConstants from "../constants/app-constants";
 import DetectShift from "../modules/detect-shift";
 
@@ -15,27 +16,20 @@ function gameBoard() {
 }
 export default class Controls extends React.Component {
   static propTypes = {
-    turnLimit: PropTypes.number
+    turnLimit: PropTypes.number,
+    moveConstraint: PropTypes.array
+  };
+
+  static defaultProps = {
+    moveConstraint: []
   };
 
   constructor(props) {
     super(props);
 
     this.state = {
-      turns: props.turns
+      turns: ScoreStore.getTurns()
     };
-  }
-
-  changeDirection(direction) {
-    if (this.state.turns !== 0) {
-      if (direction === "flipCounterclockwise") {
-        this.setState({ turns: this.state.turns - 1 });
-        AppActions.flipCounterclockwise();
-      } else {
-        this.setState({ turns: this.state.turns - 1 });
-        AppActions.flipClockwise();
-      }
-    }
   }
 
   togglePause() {
@@ -50,13 +44,15 @@ export default class Controls extends React.Component {
     return (
       <div>
         <button onClick={() => this.togglePause()}>Pause</button>
-        <button onClick={() => this.changeDirection("flipCounterclockwise")}>
-          Turn Right{" "}
+        <button onClick={() => AppActions.flipCounterclockwise()}>
+          Turn counter clockwise{" "}
         </button>
-        <button onClick={() => this.changeDirection("flipClockwise")}>
-          Turn left{" "}
-        </button>
-        <p>{this.state.turns} rotations completed</p>
+        {this.props.moveConstraint[0] != "FLIP_CLOCKWISE" && (
+          <button onClick={() => AppActions.flipClockwise()}>
+            Turn clockwise{" "}
+          </button>
+        )}
+        <p>{this.props.turns} rotations completed</p>
       </div>
     );
   }
